@@ -2,3 +2,4 @@
 build
 dist
 speedreaderclone
+poetry.lock
