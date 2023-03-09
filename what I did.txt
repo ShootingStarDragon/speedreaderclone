@@ -1,0 +1,10 @@
+forced app to give a root widget by 
+```
+    def build(self):
+        Clock.schedule_once(self.test, 0)
+        from kivy.lang import Builder
+        root = Builder.load_file("F:\\CODING\\KivyProjects\\speedreader\\speed_read_r.kv")
+        return root
+```
+
+next got "no module named kivymd.uix.screen", not sure it it worked next

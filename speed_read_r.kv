@@ -1,0 +1,1213 @@
+#:import Clipboard kivy.core.clipboard.Clipboard
+
+<DrawerClickableItem@MDNavigationDrawerItem>
+    focus_color: "#e7e4c0"
+    text_color: "#4a4939"
+    icon_color: "#4a4939"
+    ripple_color: "#c5bdd2"
+    selected_color: "#0c6c4d"
+
+
+<DrawerLabelItem@MDNavigationDrawerItem>
+    text_color: "#4a4939"
+    icon_color: "#4a4939"
+    focus_behavior: False
+    selected_color: "#4a4939"
+    _no_ripple_effect: True
+
+<XLabel@Label>:
+    color: 0.62,0.15,0.04, 1
+
+<Check@MDCheckbox>:
+    group: 'group'
+    size_hint: None, None
+    size: dp(48), dp(48)
+
+<MyToggleButton>:
+    background_down: self.theme_cls.primary_color
+    theme_text_color: "Primary"
+
+<Separator@Widget>:
+    id: sepp
+    rgba: 1, 1, 1, 1
+    canvas:
+        Color:
+            rgba: self.rgba
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+<BookLIstLabel@MDLable>:
+    md_bg_color: app.theme_cls.bg_dark
+    font_size:"22sp"
+    padding:[5,5]
+    adaptive_height: True
+    size_hint_y: None
+
+<BookButton>:
+    pos_hint:{"center_x":.5,"center_y":.5}
+    padding:[20,0]
+    text: " "
+    icon: "book-open-page-variant"
+
+MDScreen:
+    id: mainappx
+    name: "MDSCREEN"
+    MDTopAppBar:
+        title: "Speed Read-R"
+        id: TopBar
+        elevation: 4
+        pos_hint: {"top": 1}
+        md_bg_color: "#e7e4c0"
+        specific_text_color: "#4a4939"
+        left_action_items: [["menu", lambda x: nav_drawer.set_state("open")]]
+    
+
+    MDNavigationLayout:
+        x: TopBar.height
+        size_hint_y: 1.0 - TopBar.height/root.height
+        MDScreenManager:
+            id: screen_manager
+
+            MDScreen:
+                name: "reader"
+                id: md_screen_reader
+
+                MDFloatLayout:
+                    MDGridLayout:
+                        id: readerx
+                        cols: 1
+                        MDBoxLayout:
+                            adaptive_height: True
+                            padding: 5
+                            size: self.minimum_size
+                            MDLabel:
+                                id: index
+                                text: "0"
+                                pos_hint: {"top": 1, "left": 0}
+                                halign: "center"
+                                size_hint: None, None
+                                height: self.texture_size[1]
+                            MDLabel:
+                                id: book_length
+                                text: "/0"
+                                pos_hint: {"top": 1, "left": 0}
+                                height: self.texture_size[1]
+                                size_hint: None, None
+                            MDProgressBar:
+                                id: p_bar
+                                value: 20
+                                pos_hint: {"top": .5}
+                                size_hint_y: None
+                            MDLabel:
+                                id: time_left
+                                text: "00:00"
+                                pos_hint: {"top": 1, "right": 1}
+                                height: self.texture_size[1]
+                                halign: "center"
+                                size_hint: None, None
+                            MDLabel:
+                                id: display_wpm
+                                text: "0"
+                                pos_hint: {"top": 1, "right": 1}
+                                height: self.texture_size[1]
+                                halign: "center"
+                                size_hint: None, None
+
+                        Separator:
+                            size_hint_y: None
+                            pos_hint: {"top": 1}
+                            height: dp(2)
+                            orientation: "horizontal"
+                            rgba: 0.7, 0.7, 0.7, 1
+                        MDLabel:
+                            id: marker
+                            text: "|"
+                            font_size: 20
+                            size_hint_y: None
+                            halign: "center"
+                            height: self.texture_size[1]
+                            text_size: self.size
+                            valign: "bottom"
+
+                        MDStackLayout:
+                            id: reader_t
+                            MDBoxLayout:
+                                adaptive_height: True
+                                id: readerw
+                                padding: [dp(8), dp(8), dp(8), dp(80)]
+
+                                MDLabel:
+                                    id: pager_l
+                                    text: "Spe"
+                                    font_size: 40
+                                    halign: "right"
+                                    valign: "middle"
+
+                                XLabel:
+                                    id: pager
+                                    text: "e"
+                                    font_size: 40
+                                    text_size: [None, None]
+                                    size_hint_x: None
+                                    width: self.texture_size[0]+2
+                                    valign: "middle"
+
+                                MDLabel:
+                                    id: pager_r
+                                    text: "d-Read-R"
+                                    font_size: 40
+                                    halign: "left"
+                                    valign: "middle"
+
+                                MDLabel:
+                                    id: pag
+                                    size_hint_y: None
+                                    size_hint_x: None
+                                    width: 0
+                                MDLabel:
+                                    id: pag_size
+                                    size_hint_y: None
+                                    size_hint_x: None
+                                    width: 0
+                                    height: self.height
+                                
+                            Separator:
+                                size_hint_y: None
+                                id: seppa
+                                pos_hint: {"top": 1}
+                                height: dp(2)
+                                orientation: "horizontal"
+                                rgba: 0.7, 0.7, 0.7, 1
+                            
+                            MDGridLayout:
+                                id: grid_pager
+                                size_hint_y: 1
+                                cols: 1
+                                padding: [dp(40), dp(10), dp(40), dp(210)]
+                        
+                    MDIconButton:
+                        text: "F"
+                        id: fullscreen_button
+                        size_hint_y: None
+                        icon: "fullscreen"
+                        pos_hint:{"center_x":.3, "center_y":.15}
+                        on_release:
+                            if pag_size.height == self.height: pag_size.height = reader_t.height;readerw.size_hint_y = 1
+                            else: pag_size.height = self.height;readerw.size_hint_y = None
+
+                    MDIconButton:
+                        text: "play_reader"
+                        id: p_button
+                        icon: "play-circle"
+                        size_hint_y: None
+                        pos_hint:{"center_x":.7, "center_y":.15}
+                        on_release: app._keyup(self, 32)
+                    MDIconButton:
+                        text: "S_down"
+                        icon: "chevron-double-down"
+                        size_hint_y: None
+                        pos_hint:{"center_x":.5, "center_y":.1}
+                        on_release: app._keyup(self, 100)
+                    MDIconButton:
+                        text: "S_up"
+                        icon: "chevron-double-up"
+                        size_hint_y: None
+                        pos_hint:{"center_x":.5, "center_y":.2}
+                        on_release: app._keyup(self, 115)
+
+
+            MDScreen:
+                id: sett_screen
+                name: "sett"
+
+                MDGridLayout:
+                    cols: 1
+                    pos_hint: {"top": 1}
+                    
+                    MDBoxLayout:
+                        padding: "10dp"
+                        adaptive_height: True
+                        MDProgressBar:
+                            id: p_bar_sett
+                            value: 20
+                            pos_hint: {"top": 1}
+                            size_hint: .8, None
+
+                    MDLabel:
+                        id: marker_sett
+                        text: "|" # " ▼ ↓ ˅ ⌄ ⬇️"
+                        font_size: 20
+                        size_hint_y: None
+                        halign: "center"
+                        height: self.texture_size[1]
+                        text_size: self.size
+                        valign: "bottom"
+
+                    MDGridLayout:
+                        adaptive_height: True
+                        id: reader_sett
+                        pos_hint: {"top": .5}
+                        cols: 3
+                        padding: [dp(8), dp(8), dp(8), dp(30)]
+                        MDLabel:
+                            id: pager_sett_l
+                            text: "s"
+                            font_size: 40
+                            size_hint_y: None
+                            halign: "right"
+
+                        XLabel:
+                            id: pager_sett
+                            text: "p"
+                            font_size: 40
+                            text_size: [None, None]
+                            size_hint_x: None
+                            adaptive_size: True
+                            width: self.texture_size[0]+2
+                        MDLabel:
+                            id: pager_sett_r
+                            text: "eed"
+                            font_size: 40
+                            size_hint_y: None
+                            halign: "left"
+
+                    Separator:
+                        size_hint_y: None
+                        pos_hint: {"top": 1}
+                        height: dp(2)
+                        orientation: "horizontal"
+                        rgba: 0.7, 0.7, 0.7, 1
+
+                    MDGridLayout:
+                        adaptive_height: True
+                        padding: [dp(8), dp(8), dp(8), dp(8)]
+                        spacing: "8dp"
+                        cols: 3
+
+                        MDFloatLayout:
+                            adaptive_height: True
+                            height: "40dp"
+                            pos_hint: {"top": 1}
+                            size_hint_y: None
+
+                            MyToggleButton:
+                                text: "Normal"
+                                id: s1
+                                group: "slots"
+                                pos_hint: {"center_x": .5, "center_y": .5}
+                                size_hint_x: 1
+                                adaptive_height: True
+                                on_release:
+                                    app.set_slot("s1")
+                                    app.keep_button_up("s1", s2.state, s3.state)
+
+                        MDFloatLayout:
+                            adaptive_height: True
+                            size_hint_y: None
+                            height: "40dp"
+                            pos_hint: {"top": 1}
+
+                            MyToggleButton:
+                                text: "Fast"
+                                id: s2
+                                group: "slots"
+                                pos_hint: {"center_x": .5, "center_y": .5}
+                                size_hint_x: 1
+                                adaptive_height: True
+                                on_release:
+                                    app.set_slot("s2")
+                                    app.keep_button_up("s2", s1.state, s3.state)
+
+                        MDFloatLayout:
+                            adaptive_height: True
+                            size_hint_y: None
+                            height: "40dp"
+                            pos_hint: {"top": 1}
+
+                            MyToggleButton:
+                                text: "Easy"
+                                id: s3
+                                group: "slots"
+                                pos_hint: {"center_x": .5, "center_y": .5}
+                                size_hint_x: 1
+                                adaptive_height: True
+                                on_release:
+                                    app.set_slot("s3")
+                                    app.keep_button_up("s3", s1.state, s2.state)
+
+                    Separator:
+                        size_hint_y: None
+                        pos_hint: {"top": 1}
+                        height: dp(2)
+                        orientation: "horizontal"
+                        adaptive_height: True
+                        rgba: 0.7, 0.7, 0.7, 1
+
+                    ScrollView:
+                        MDGridLayout:
+                            adaptive_height: True
+                            size_hint_y: None
+                            cols: 2
+                            padding: [dp(50), dp(50), dp(50), dp(50)]
+
+                            MDLabel:
+                                text: " "
+                                halign: "center"
+                                theme_text_color: "Custom"
+                                text_color: 0, 0, 0, 0
+                            MDLabel:
+                                text: " "
+                                halign: "center"
+                                theme_text_color: "Custom"
+                                text_color: 0, 0, 0, 0
+
+                            MDLabel:
+                                text: "Reader size"
+                                halign: "center"
+
+                            MDTextField:
+                                id: reader_text_size
+                                halign: "center"
+                                input_filter: "int"
+                                size_hint: None, None
+                                width: "100dp"
+                                text: ""
+                                helper_text: "Hit enter to save"
+                                helper_text_mode: "on_focus"
+                                on_text_validate:
+                                    app.save_settings("reader_text_size", reader_text_size.text)
+                                    app.reader_sett_set_size(self, reader_text_size.text)
+
+
+                            MDLabel:
+                                text: "Background size"
+                                halign: "center"
+
+                            MDTextField:
+                                id: bg_text_size
+                                halign: "center"
+                                input_filter: "int"
+                                size_hint: None, None
+                                width: "100dp"
+                                helper_text: "Hit enter to save"
+                                helper_text_mode: "on_focus"
+                                text: ""
+                                on_text_validate:
+                                    app.save_settings("bg_text_size", bg_text_size.text)
+
+                            MDLabel:
+                                text: "WPM"
+                                halign: "center"
+
+                            MDTextField:
+                                id: wpm
+                                halign: "center"
+                                input_filter: "int"
+                                size_hint: None, None
+                                width: "100dp"
+                                helper_text: "Hit enter to save"
+                                helper_text_mode: "on_focus"
+                                text: ""
+                                on_text_validate: app.save_settings("wpm",wpm.text)
+
+                            MDLabel:
+                                text: "Acceleration (s)"
+                                halign: "center"
+
+                            MDTextField:
+                                id: accel
+                                halign: "center"
+                                input_filter: "int"
+                                size_hint: None, None
+                                width: "100dp"
+                                helper_text: "Hit enter to save"
+                                helper_text_mode: "on_focus"
+                                text: ""
+                                on_text_validate: app.save_settings("accel",accel.text)
+
+                            MDLabel:
+                                text: "Focus pointer"
+                                halign: "center"
+
+                            MDSwitch:
+                                id: pointer
+                                on_active: 
+                                    app.save_settings("pointer", pointer.active)
+                                    app.show_pointer(self, pointer.active)
+
+                            MDLabel:
+                                text: "Word length delay"
+                                halign: "center"
+
+                            MDTextField:
+                                id: l_w_delay
+                                halign: "center"
+                                input_filter: "int"
+                                size_hint: None, None
+                                width: "100dp"
+                                helper_text: "Hit enter to save"
+                                helper_text_mode: "on_focus"
+                                text: ""
+                                on_text_validate: app.save_settings("l_w_delay", l_w_delay.text)
+
+                            MDLabel:
+                                text: "Dot delay (ms)"
+                                halign: "center"
+
+                            MDTextField:
+                                id: dot_delay
+                                halign: "center"
+                                input_filter: "int"
+                                size_hint: None, None
+                                width: "100dp"
+                                helper_text: "Hit enter to save"
+                                helper_text_mode: "on_focus"
+                                text: ""
+                                on_text_validate: app.save_settings("dot_delay", dot_delay.text)
+
+                            MDLabel:
+                                text: "Comma delay (ms)"
+                                halign: "center"
+
+                            MDTextField:
+                                id: comma_delay
+                                input_filter: "int"
+                                halign: "center"
+                                size_hint: None, None
+                                width: "100dp"
+                                helper_text: "Hit enter to save"
+                                helper_text_mode: "on_focus"
+                                text: ""
+                                on_text_validate: app.save_settings("comma_delay", comma_delay.text)
+
+                            MDLabel:
+                                text: "Progress bar"
+                                halign: "center"
+
+                            MDSwitch:
+                                id: progress_bar
+                                on_active: app.save_settings("progress_bar", progress_bar.active)
+
+                            MDLabel:
+                                text: "Blink"
+                                halign: "center"
+
+                            MDSwitch:
+                                id: blink_toggle
+                                on_active: app.save_settings("blink_toggle", blink_toggle.active)
+
+                            MDLabel:
+                                text: "Blink duration (ms)"
+                                halign: "center"
+
+                            MDTextField:
+                                id: blink_delay
+                                halign: "center"
+                                input_filter: "int"
+                                size_hint: None, None
+                                width: "100dp"
+                                helper_text: "Hit enter to save"
+                                helper_text_mode: "on_focus"
+                                text: ""
+                                on_text_validate: app.save_settings("blink_delay", blink_delay.text)
+
+                            MDLabel:
+                                text: "Blink interval (s)"
+                                halign: "center"
+
+                            MDTextField:
+                                id: blink_interval
+                                input_filter: "int"
+                                halign: "center"
+                                size_hint: None, None
+                                width: "100dp"
+                                helper_text: "Hit enter to save"
+                                helper_text_mode: "on_focus"
+                                text: ""
+                                on_text_validate: app.save_settings("blink_interval",blink_interval.text)
+
+                            MDLabel:
+                                text: "Blink fade"
+                                halign: "center"
+
+                            MDSwitch:
+                                id: blink_fade_toggle
+                                on_active: app.save_settings("blink_fade_toggle", blink_fade_toggle.active)
+
+                            MDLabel:
+                                text: "Blink fade time (s)"
+                                halign: "center"
+
+                            MDTextField:
+                                id: blink_fade
+                                halign: "center"
+                                input_filter: "int"
+                                size_hint: None, None
+                                width: "100dp"
+                                helper_text: "Hit enter to save"
+                                helper_text_mode: "on_focus"
+                                text: ""
+                                on_text_validate: app.save_settings("blink_fade", blink_fade.text)
+
+                            MDLabel:
+                                text: "Blink color"
+                                halign: "center"
+
+                            MDRaisedButton:
+                                id: blink_colorr
+                                halign: "center"
+                                size_hint: None, None
+                                text: "Pick"
+                                on_release: app.open_color_picker()
+
+            MDScreen:
+                id: books
+                name: "books"
+
+                MDGridLayout:
+                    pos_hint: {"top": 1}
+                    cols: 1
+
+                    MDGridLayout:
+                        adaptive_height: True
+                        pos_hint: {"top": 1}
+                        padding: [dp(50), dp(20), dp(20), dp(20)]
+                        cols: 3
+                        MDLabel:
+                            adaptive_height: True
+                            text: "Bookshelf"
+                            font_size: 40
+                            halign: "right"
+                        MDLabel:
+                            text: ""
+
+                        MDRectangleFlatButton:
+                            text: "Reload"
+                            pos_hint: {"center_x": .5, "center_y": .5}
+                            anchor_x: "right"
+                            on_release: app.reload_bookshelf()
+
+                    Separator:
+                        size_hint_y: None
+                        pos_hint: {"top": 1}
+                        height: dp(2)
+                        orientation: "horizontal"
+                        adaptive_height: True
+                        rgba: 0.7, 0.7, 0.7, 1
+                    
+                    MDGridLayout:
+                        id: books_gr
+                        adaptive_height: True
+                        pos_hint: {"top": .9}
+                        do_scroll_x: False
+                        padding: [dp(10), dp(10), dp(10), dp(10)]
+                        cols: 2
+                        MDLabel:
+                            text: "Title"
+                            font_style: "H6"
+                            halign: "center"
+                            adaptive_height: True
+                        MDLabel:
+                            text: "Progress"
+                            font_style: "H6"
+                            halign: "center"
+                            adaptive_height: True
+
+                    Separator:
+                        size_hint_y: None
+                        pos_hint: {"top": 1}
+                        height: dp(2)
+                        orientation: "horizontal"
+                        adaptive_height: True
+                        rgba: 0.7, 0.7, 0.7, 1
+
+                    ScrollView:
+                        adaptive_height: True
+                        pos_hint: {"top": .8} # W
+                        bar_width: 20
+                        scroll_type:["bars", "content"]
+
+                        MDGridLayout:
+                            id: books_grid_1
+                            adaptive_height: True
+                            pos_hint: {"top": .9}
+                            padding: [dp(10), dp(20), dp(20), dp(100)]
+                            cols: 1
+
+                            MDGridLayout:
+                                id: books_grid_2
+                                adaptive_height: True
+                                pos_hint: {"top": .9}
+                                spacing: [0, dp(5)]
+                                cols: 3
+
+            MDScreen:
+                id: clip
+                name: "clipboard"
+
+                MDGridLayout:
+                    pos_hint: {"top": 1}
+                    padding: [dp(50), dp(50), dp(50), dp(50)]
+                    cols: 1
+
+                    MDBoxLayout:
+                        pos_hint: {"top": 1}
+                        spacing: dp(50)
+                        adaptive_height: True
+
+                        MDTextField:
+                            id: new_title
+                            text: "New_text"
+                            hint_text: "title"
+                            size_hint_x: .85
+                        MDLabel:
+                            id: ext
+                            text: ".txt"
+                            size_hint_x: .15
+                            halign: "left"
+                    MDBoxLayout:
+                        spacing: dp(50)
+                        adaptive_height: True
+                        padding: [dp(20), dp(20), dp(0), dp(20)]
+                        MDRectangleFlatButton:
+                            text: "Paste clipboard"
+                            pos_hint_x: .15
+                            halign: "center"
+                            on_release: clip_in.text = Clipboard.paste()
+                        MDRectangleFlatButton:
+                            text: "Save & read"
+                            pos_hint_x: .85
+                            halign: "center"
+                            disabled: True if clip_in.text == "" else False
+                            on_release: app.save_clip(self, new_title.text, clip_in.text)
+                    
+                    MDGridLayout:
+                        id: in_box
+                        adaptive_height: True
+                        cols: 1
+                        size_hint_y: 1
+                        padding: [dp(0), dp(0), dp(0), dp(0)]
+                        MDTextField:
+                            mode: "rectangle"
+                            id: clip_in
+                            max_height: in_box.height
+                            adaptive_size: True
+                            hint_text: "Input new text"
+                            multiline: True
+                            allow_copy: True
+                            required: True
+                            background_color: [0,0,0,0]
+                            hint_text_color: ([.15,.15,.15,1] if app.theme_cls.theme_style != "Dark" else "gray")
+                            foreground_color: ([.15,.15,.15,1] if app.theme_cls.theme_style != "Dark" else "gray")
+
+
+            MDScreen:
+                id: donations
+                name: "donations"
+
+                MDGridLayout:
+                    cols: 1
+                    padding: [dp(20), dp(5), dp(20), dp(20)]
+                    spacing: [0, dp(20)]
+                    MDCard:
+                        size_hint: .4, .45
+                        FitImage:
+                            source: "./assets/Loudbeat_logo.png"
+                            width: 200
+                            allow_stretch: True
+                    MDGridLayout:
+                        cols: 2
+                        adaptive_height: True
+                        adaptive_width: True
+                        pos_hint: {"top": 1}
+                        Image:
+                            source: "./assets/instagram_logo.png"
+                            size_hint_x: None
+                        MDRectangleFlatButton:
+                            text: "@loudbeat"
+                            halign: "center"
+                            size_hint_x: 1
+                            on_release: app.copy_clipboard(self, "ig")
+                    Separator:
+                        size_hint_y: None
+                        pos_hint: {"top": 1}
+                        height: dp(2)
+                        orientation: "horizontal"
+                        adaptive_height: True
+                        rgba: 0.7, 0.7, 0.7, 1
+
+
+                    MDScrollView:
+                        do_scroll_x: False
+                        adaptive_height: True
+                        MDGridLayout:
+                            cols: 2
+                            adaptive_height: True
+                            adaptive_width: True
+                            pos_hint: {"top": 1}
+                            padding: [dp(20), dp(20), dp(20), dp(100)]
+                            spacing: [0, dp(20)]
+                            MDLabel:
+                                text: "Crypto (ERC-20)"
+                                id: crypto
+                                halign: "center"
+                            MDLabel:
+                                text: " "
+                            Image:
+                                source: "./assets/ethereum_logo.png"
+                                size_hint_x: None
+                            MDRectangleFlatButton:
+                                text: "Copy address"
+                                on_release: app.copy_clipboard(self, "crypto")
+                            Separator:
+                                size_hint_y: None
+                                pos_hint: {"top": 1}
+                                height: dp(2)
+                                orientation: "horizontal"
+                                adaptive_height: True
+                                rgba: 0.7, 0.7, 0.7, 1
+                            Separator:
+                                size_hint_y: None
+                                pos_hint: {"top": 1}
+                                height: dp(2)
+                                orientation: "horizontal"
+                                adaptive_height: True
+                                rgba: 0.7, 0.7, 0.7, 1
+                            
+                            MDLabel:
+                                text: "Coindrop"
+                                id: coindrop
+                                halign: "center"
+                            MDLabel:
+                                text: " "
+                            Image:
+                                source: "./assets/coindrop.png"
+                                size_hint_x: None
+                            MDRectangleFlatButton:
+                                text: "https://coindrop.to/loudbeat"
+                                halign: "center"
+                                on_release: app.copy_clipboard(self, "coindrop")
+                            Separator:
+                                size_hint_y: None
+                                pos_hint: {"top": 1}
+                                height: dp(2)
+                                orientation: "horizontal"
+                                adaptive_height: True
+                                rgba: 0.7, 0.7, 0.7, 1
+                            Separator:
+                                size_hint_y: None
+                                pos_hint: {"top": 1}
+                                height: dp(2)
+                                orientation: "horizontal"
+                                adaptive_height: True
+                                rgba: 0.7, 0.7, 0.7, 1
+                            
+                            MDLabel:
+                                text: "Ko-fi"
+                                id: kofi
+                                halign: "center"
+                            MDLabel:
+                                text: " "
+                            Image:
+                                source: "./assets/kofi.png"
+                                size_hint_x: None
+                            MDRectangleFlatButton:
+                                text: "https://ko-fi.com/loudbeat"
+                                halign: "center"
+                                on_release: app.copy_clipboard(self, "kofi")
+                            Separator:
+                                size_hint_y: None
+                                pos_hint: {"top": 1}
+                                height: dp(2)
+                                orientation: "horizontal"
+                                adaptive_height: True
+                                rgba: 0.7, 0.7, 0.7, 1
+                            Separator:
+                                size_hint_y: None
+                                pos_hint: {"top": 1}
+                                height: dp(2)
+                                orientation: "horizontal"
+                                adaptive_height: True
+                                rgba: 0.7, 0.7, 0.7, 1
+
+                            MDLabel:
+                                text: "Buy me a coffee"
+                                id: coffee
+                                halign: "center"
+                            MDLabel:
+                                text: " "
+                            Image:
+                                source: "./assets/buymeacoffee.png"
+                                size_hint_x: None
+                            MDRectangleFlatButton:
+                                text: "https://www.buymeacoffee.com/loudbeat"
+                                halign: "center"
+                                on_release: app.copy_clipboard(self, "coffee")
+                            Separator:
+                                size_hint_y: None
+                                pos_hint: {"top": 1}
+                                height: dp(2)
+                                orientation: "horizontal"
+                                adaptive_height: True
+                                rgba: 0.7, 0.7, 0.7, 1
+                            Separator:
+                                size_hint_y: None
+                                pos_hint: {"top": 1}
+                                height: dp(2)
+                                orientation: "horizontal"
+                                adaptive_height: True
+                                rgba: 0.7, 0.7, 0.7, 1
+                            MDLabel:
+                                text: "Paypal"
+                                id: coffee
+                                halign: "center"
+                            MDLabel:
+                                text: " "
+                            Image:
+                                source: "./assets/Paypal.png"
+                                size_hint_x: None
+                            MDRectangleFlatButton:
+                                text: "https://www.paypal.com/donate/?hosted_button_id=6LUSPTKGZFWCJ"
+                                halign: "center"
+                                on_release: app.copy_clipboard(self, "paypal")
+                            Separator:
+                                size_hint_y: None
+                                pos_hint: {"top": 1}
+                                height: dp(2)
+                                orientation: "horizontal"
+                                adaptive_height: True
+                                rgba: 0.7, 0.7, 0.7, 1
+                            Separator:
+                                size_hint_y: None
+                                pos_hint: {"top": 1}
+                                height: dp(2)
+                                orientation: "horizontal"
+                                adaptive_height: True
+                                rgba: 0.7, 0.7, 0.7, 1
+
+            MDScreen:
+                id: them
+                name: "themes"
+
+                MDGridLayout:
+                    cols: 1
+                    pos_hint: {"top": 1}
+                    padding: [dp(20), dp(20), dp(20), dp(20)]
+                    spacing: [0, dp(20)]
+
+                    RelativeLayout:
+                        size_hint_y: None
+                        MDIconButton:
+                            text: "play_reader"
+                            id: m_theme
+                            icon: "circle-half-full"
+                            size_hint_y: None
+                            icon_size: 50
+                            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                            md_bg_color: app.theme_cls.primary_color
+                            on_release: app.set_dark(self, "")
+
+                    MDGridLayout:
+                        cols: 2
+                        pos_hint: {"top": 1}
+                        id: theme_grid
+                        padding: [dp(20), dp(20), dp(20), dp(20)]
+                        spacing: [dp(5), dp(20)]
+                        MDScrollView:
+                            MDStackLayout:
+                                adaptive_height: True
+                                size_hint_y: None
+                                padding: [20, 20, 20, 20]
+                                spacing: [20, 20]
+                                MDIconButton:
+                                    icon: "circle-outline"
+                                    theme_icon_color: "Custom"
+                                    icon_color: 0.96,0.26,0.21,1
+                                    icon_size: 50
+                                    on_release: app.set_theme(self, "Red")
+                                
+                                MDIconButton:
+                                    icon: "circle-outline"
+                                    theme_icon_color: "Custom"
+                                    icon_color: 0.91,0.12,0.39,1
+                                    icon_size: 50
+                                    on_release: app.set_theme(self, "Pink")
+                                
+                                MDIconButton:
+                                    icon: "circle-outline"
+                                    theme_icon_color: "Custom"
+                                    icon_color: 0.61,0.15,0.69,1
+                                    icon_size: 50
+                                    on_release: app.set_theme(self, "Purple")
+                                
+                                MDIconButton:
+                                    icon: "circle-outline"
+                                    theme_icon_color: "Custom"
+                                    icon_color: 0.4,0.23,0.72,1
+                                    icon_size: 50
+                                    on_release: app.set_theme(self, "DeepPurple")
+                                
+                                MDIconButton:
+                                    icon: "circle-outline"
+                                    theme_icon_color: "Custom"
+                                    icon_color: 0.25,0.32,0.71,1
+                                    icon_size: 50
+                                    on_release: app.set_theme(self, "Indigo")
+                                    
+                                MDIconButton:
+                                    icon: "circle-outline"
+                                    theme_icon_color: "Custom"
+                                    icon_color: 0.13,0.59,0.95,1
+                                    icon_size: 50
+                                    on_release: app.set_theme(self, "Blue")
+                                
+                                MDIconButton:
+                                    icon: "circle-outline"
+                                    theme_icon_color: "Custom"
+                                    icon_color: 0.01,0.66,0.96,1
+                                    icon_size: 50
+                                    on_release: app.set_theme(self, "LightBlue")
+                                
+                                MDIconButton:
+                                    icon: "circle-outline"
+                                    theme_icon_color: "Custom"
+                                    icon_color: 0,0.74,0.83,1
+                                    icon_size: 50
+                                    on_release: app.set_theme(self, "Cyan")
+
+                                MDIconButton:
+                                    icon: "circle-outline"
+                                    theme_icon_color: "Custom"
+                                    icon_color: 0,0.59,0.53,1
+                                    icon_size: 50
+                                    on_release: app.set_theme(self, "Teal")
+
+                                MDIconButton:
+                                    icon: "circle-outline"
+                                    theme_icon_color: "Custom"
+                                    icon_color: 0.3,0.69,0.31,1
+                                    icon_size: 50
+                                    on_release: app.set_theme(self, "Green")
+                                    
+                                MDIconButton:
+                                    icon: "circle-outline"
+                                    theme_icon_color: "Custom"
+                                    icon_color: 0.55,0.76,0.29,1
+                                    icon_size: 50
+                                    on_release: app.set_theme(self, "LightGreen")
+                                
+                                MDIconButton:
+                                    icon: "circle-outline"
+                                    theme_icon_color: "Custom"
+                                    icon_color: 0.8,0.86,0.22,1
+                                    icon_size: 50
+                                    on_release: app.set_theme(self, "Lime")
+
+                                MDIconButton:
+                                    icon: "circle-outline"
+                                    theme_icon_color: "Custom"
+                                    icon_color: 1,0.92,0.23,1
+                                    icon_size: 50
+                                    on_release: app.set_theme(self, "Yellow")
+                                
+                                MDIconButton:
+                                    icon: "circle-outline"
+                                    theme_icon_color: "Custom"
+                                    icon_color: 1,0.76,0.03,1
+                                    icon_size: 50
+                                    on_release: app.set_theme(self, "Amber")
+                                
+                                MDIconButton:
+                                    icon: "circle-outline"
+                                    theme_icon_color: "Custom"
+                                    icon_color: 1,0.6,0,1
+                                    icon_size: 50
+                                    on_release: app.set_theme(self, "Orange")
+                                
+                                MDIconButton:
+                                    icon: "circle-outline"
+                                    theme_icon_color: "Custom"
+                                    icon_color: 1,0.34,0.13,1
+                                    icon_size: 50
+                                    on_release: app.set_theme(self, "DeepOrange")
+
+                                MDIconButton:
+                                    icon: "circle-outline"
+                                    theme_icon_color: "Custom"
+                                    icon_color: 0.47,0.33,0.28,1
+                                    icon_size: 50
+                                    on_release: app.set_theme(self, "Brown")
+
+                                MDIconButton:
+                                    icon: "circle-outline"
+                                    theme_icon_color: "Custom"
+                                    icon_color: 0.62,0.62,0.62,1
+                                    icon_size: 50
+                                    on_release: app.set_theme(self, "Gray")
+                                
+                                MDIconButton:
+                                    icon: "circle-outline"
+                                    theme_icon_color: "Custom"
+                                    icon_color: 0.38,0.49,0.55,1
+                                    icon_size: 50
+                                    on_release: app.set_theme(self, "BlueGray")
+                        
+                        MDScrollView:
+                            size_hint_x: None
+                            width: theme_grid.width*.2
+                            MDBoxLayout:
+                                orientation: "vertical"
+                                id: hue_box
+                                adaptive_height: True
+                                spacing: 20
+                                padding: 10
+                                MDFillRoundFlatButton:
+                                    text: "50"
+                                    size_hint_x: 1
+                                    on_release: app.set_hue(self, "50")
+                                
+                                MDFillRoundFlatButton:
+                                    text: "100"
+                                    size_hint_x: 1
+                                    on_release: app.set_hue(self, "100")
+                                
+                                MDFillRoundFlatButton:
+                                    text: "200"
+                                    size_hint_x: 1
+                                    on_release: app.set_hue(self, "200")
+                                
+                                MDFillRoundFlatButton:
+                                    text: "300"
+                                    size_hint_x: 1
+                                    on_release: app.set_hue(self, "300")
+                                
+                                MDFillRoundFlatButton:
+                                    text: "400"
+                                    size_hint_x: 1
+                                    on_release: app.set_hue(self, "400")
+                                
+                                MDFillRoundFlatButton:
+                                    text: "500"
+                                    size_hint_x: 1
+                                    on_release: app.set_hue(self, "500")
+                                
+                                MDFillRoundFlatButton:
+                                    text: "600"
+                                    size_hint_x: 1
+                                    on_release: app.set_hue(self, "600")
+                                
+                                MDFillRoundFlatButton:
+                                    text: "700"
+                                    size_hint_x: 1
+                                    on_release: app.set_hue(self, "700")
+                                
+                                MDFillRoundFlatButton:
+                                    text: "800"
+                                    size_hint_x: 1
+                                    on_release: app.set_hue(self, "800")
+                                
+                                MDFillRoundFlatButton:
+                                    text: "900"
+                                    size_hint_x: 1
+                                    on_release: app.set_hue(self, "900")
+                                
+                                MDFillRoundFlatButton:
+                                    text: "A100"
+                                    size_hint_x: 1
+                                    on_release: app.set_hue(self, "A100")
+                                
+                                MDFillRoundFlatButton:
+                                    text: "A200"
+                                    size_hint_x: 1
+                                    on_release: app.set_hue(self, "A200")
+                                
+                                MDFillRoundFlatButton:
+                                    text: "A400"
+                                    size_hint_x: 1
+                                    on_release: app.set_hue(self, "A400")
+                                
+                                MDFillRoundFlatButton:
+                                    text: "A700"
+                                    size_hint_x: 1
+                                    on_release: app.set_hue(self, "A700")
+                            
+
+        MDNavigationDrawer:
+            id: nav_drawer
+            radius: (0, 16, 16, 0)
+
+            MDNavigationDrawerMenu:
+
+                MDNavigationDrawerHeader:
+                    title: "SR-R v1.0"
+                    title_color: "#4a4939"
+                    text: "by Loudbeat"
+                    spacing: "4dp"
+                    padding: "12dp", 0, 0, "56dp"
+
+                MDNavigationDrawerLabel:
+                    text: "Menu"
+
+                DrawerClickableItem:
+                    icon: "eye"
+                    # right_text: "+99"
+                    text_right_color: "#4a4939"
+                    text: "Reader"
+                    on_press:
+                        nav_drawer.set_state("close")
+                        screen_manager.current = "reader"
+
+                DrawerClickableItem:
+                    icon: "cog"
+                    # right_text: "+99"
+                    text_right_color: "#4a4939"
+                    text: "Settings"
+                    on_press:
+                        nav_drawer.set_state("close")
+                        screen_manager.current = "sett"
+                        app.post_slot(self)
+                        app.post_settings(self)
+                        app.reader_sett_set_size(self, reader_text_size.text),
+                        app.show_pointer(self)
+                        app.play_reader_sett(self)
+
+                DrawerClickableItem:
+                    id: show_path
+                    icon: "folder"
+                    text: ""
+                    shorten_from: "right"
+                    on_press:
+                        nav_drawer.set_state("close")
+                        app.file_manager_open()
+
+                DrawerClickableItem:
+                    icon: "book-arrow-right"
+                    text: "Books"
+                    on_press:
+                        nav_drawer.set_state("close")
+                        screen_manager.current = "books"
+                        app.load_books()
+                
+                DrawerClickableItem:
+                    icon: "clipboard-text-play-outline"
+                    text: "Quick Text"
+                    on_press:
+                        nav_drawer.set_state("close")
+                        screen_manager.current = "clipboard"
+
+                MDNavigationDrawerDivider:
+
+                DrawerClickableItem:
+                    icon: "theme-light-dark"
+                    text: "Themes"
+                    on_press:
+                        nav_drawer.set_state("close")
+                        screen_manager.current = "themes"
+
+                DrawerClickableItem:
+                    icon: "hand-coin"
+                    text: "Donations"
+                    on_press:
+                        nav_drawer.set_state("close")
+                        screen_manager.current = "donations"
