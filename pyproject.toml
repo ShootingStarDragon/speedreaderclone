@@ -1,0 +1,27 @@
+[tool.poetry]
+name = "speedreader"
+version = "0.1.0"
+description = ""
+authors = ["ShootingStarDragon"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "3.10.7"
+kivy = "^2.1.0"
+kivymd = "^1.1.1"
+ebooklib = "^0.18"
+pypdf = "^3.5.1"
+striprtf = "^0.0.22"
+bs4 = "^0.0.1"
+markdown = "^3.4.1"
+pyinstaller = "^5.8.0"
+docutils = "^0.19"
+pygments = "^2.14.0"
+pypiwin32 = "^223"
+kivy-deps-glew = "^0.3.1"
+kivy-deps-gstreamer = "^0.3.3"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

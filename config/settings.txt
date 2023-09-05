@@ -1,0 +1,30 @@
+Press_space to start the prompter, here you can test the settings and see their effects without having to change the screen.
+
+You can configure up to three different sets of settings for a convenient quick switch and use them for different types of texts, or maybe you can tune one for when you're tired.
+
+On the Reader screen, you can use the letters "S" and "D" to increase and decrease the speed by 10 words per minute, the spacebar to play and pause, and the "F" to toggle the reader on fullscreen mode. You can also set the prompter on any word by double-clicking on it
+
+Some settings are self-explanatory, such as reader and background size, and progress bar, others are not so much, so here are some tips.
+
+WPM or word per minute is the main reading speed. A higher number will make the text go faster.
+
+Acceleration: This setting's unit is in seconds, here you'll set how many seconds the speed will keep increasing until it reaches the top speed you've set.
+
+Word length delay: You can set it to zero "0" to turn off this feature, this way every word will have the same delay no matter its length. Otherwise values greater than 1 will produce a longer delay for longer words and shorter delay for shorter words. Normal values could go between 40 adn 60, but you can achieve the same result changing the WPM, so there's no bood or bad. Have in mind that activating this feature will throw off the accurady of how many words per minute you'll actually get.
+
+Dot and comma delay: Each one will simply add "X" amount of milliseconds to the delay if the word ends with one of them.
+
+Blink: You can toggle the blink function on or off. All the other blink parameters won't take effect if this setting is deactivated.
+
+Blink duration will make the prompter stops on the blinking symbol "-.-" for the selected amount of milliseconds, so 500 will make the blink time half a second, 200 a fifth of a second, and so on.
+
+Blink interval: This sets the interval in seconds in which the blink will appear on the prompter. Usually, when we are focused and our vision is fixed on some screen, we tend to blink less than we usually would, so to keep our eyes moist and healthy, and to avoid losing a word while our eyes are closed on a high wpm setting, the prompter will take a break so you can blink naturally and resume your focus before the words continue.
+
+Blink fade: You can also set the blink to fade if you find it annoying, this toggle will make it change its transparency until it turns invisible, leaving the prompter with only a blank space for you to blink.
+
+Blink fade time: This unit is also in seconds and it'll gradually fade the blink "-.-" out in the desired time.
+
+Blink color: Set the blink "-.-" color. Our vision has something called "persistence of vision" also known by many other names, which is a trait that makes us perceive "images" or more precisely "light" even after that light has stopped entering our eyes.
+Redish tones are the less energetic ones, and also the ones that less interfere with our sensitivity, so to avoid a possible ghosting image it's best to use some kind of red or orange tone. Or you can also turn off the fading feature and set a color with a fixed transparency to avoid being distracted.
+
+One last thing. This text will be auto-generated if the file "settings.txt" doesn't exist in the current Books file. However, you can change this text as you please, though, keep in mind that this file won't be parsed with any complexity other than a plain text file, so only write here with words separated by spaces.
